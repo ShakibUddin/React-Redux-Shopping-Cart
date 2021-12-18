@@ -1,29 +1,18 @@
-import React, { useReducer } from 'react';
-import styled from 'styled-components';
-import CartReducer from '../../Redux/Reducers/CartReducer';
-import { cartState } from '../../Redux/Stores/CartStore';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { decreaseProduct, increaseProduct } from '../../Redux/Actions/ShopAction';
 
-const Wrapper = styled.div`
-    display: flex;
-    width: 90%;
-    margin: 0 auto;
-    padding: 10px;
-    margin: 10px 0;
-`;
-const Title = styled.p`
-    color: black;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-`;
+
 export default function CartProduct(props) {
-    const [state, dispatch] = useReducer(CartReducer, cartState)
-
+    const dispatch = useDispatch();
     return (
-        <Wrapper>
-            <button onClick={() => dispatch({ type: "ADD_ITEM" })}>+</button>
-            <Title>{props.title} - {props.quantity}</Title>
-            <button>-</button>
-        </Wrapper>
+        <div className="w-11/12 justify-between mx-auto flex my-4 p-2 bg-white">
+            <p className="text-black mb-4">{props.title}</p>
+            <div className="w-2/12 flex flex-col items-center justify-between">
+                <button className="w-full bg-green-500 text-white" onClick={() => dispatch(increaseProduct(props.product))}> + </button>
+                <p className="text-black">{props.quantity}</p>
+                <button className="w-full bg-red-500 text-white" onClick={() => dispatch(decreaseProduct(props.product))}> - </button>
+            </div>
+        </div>
     )
 }

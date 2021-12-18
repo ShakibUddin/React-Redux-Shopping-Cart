@@ -1,18 +1,18 @@
-import React, { useReducer } from 'react';
-import CartReducer from '../../Redux/Reducers/CartReducer';
-import { cartState } from '../../Redux/Stores/CartStore';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import CartProduct from '../CartProduct/CartProduct';
 
 export default function Cart() {
-    const [state, dispatch] = useReducer(CartReducer, cartState);
+    const productsInCart = useSelector(state => state.shop.productsInCart);
+    const totalPrice = useSelector(state => state.shop.totalPrice);
     return (
-        <div className="flex justify-center w-2/5 bg-blue-200 min-h-screen">
+        <div className="flex flex-col items-center w-2/5 bg-blue-200 min-h-screen">
             <p className="text-black font-bold text-center">
-                Total: {state.total} Taka
+                Total: {totalPrice} Taka
             </p>
             <div className="flex flex-col">
                 {
-                    Array.from(state.products.keys()).map(product => <CartProduct key={product.id} title={product.title} quantity={state.products[product]} />)
+                    Array.from(productsInCart.keys()).map(product => <CartProduct key={product.id} title={product.title} quantity={productsInCart.get(product)} product={product} />)
                 }
             </div>
         </div>
