@@ -29,6 +29,9 @@ export default function CartReducer(state = initialState, action) {
         case 'DECREASE_PRODUCT':
             state.productsInCart.set(action.payload, state.productsInCart.get(action.payload) - 1);
             state.totalPrice -= action.payload.price;
+            if (state.productsInCart.get(action.payload) === 0) {
+                state.productsInCart.delete(action.payload);
+            }
             return {
                 ...state,
                 totalPrice: parseFloat(state.totalPrice.toFixed(2)),
@@ -36,6 +39,7 @@ export default function CartReducer(state = initialState, action) {
             };
         case 'CLEAR_CART':
             return {
+                ...state,
                 productsInCart: new Map(),
                 totalPrice: 0
             };
